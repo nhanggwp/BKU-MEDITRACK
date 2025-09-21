@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "MediTrackApp",
+    "slug": "MediTrackApp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./ClientApp/assets/logo.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./ClientApp/assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.naman311.MediTrackApp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./ClientApp/assets/logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "favicon": "./ClientApp/assets/logo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "22e18d8f-277f-43d4-80b8-5d0853cfc8b0"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/22e18d8f-277f-43d4-80b8-5d0853cfc8b0"
+    }
+  }
+}

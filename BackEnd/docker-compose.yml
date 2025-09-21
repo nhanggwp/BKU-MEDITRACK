@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # MediTrack API
+  meditrack-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - REDIS_URL=redis://redis:6379
+      - SECRET_KEY=${SECRET_KEY}
+      - ENVIRONMENT=development
+    volumes:
+      - .:/app
+      - ./db-twosides:/app/db-twosides
+    depends_on:
+      - redis
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # Supabase CLI (optional for local development)
+  supabase:
+    image: supabase/cli:latest
+    volumes:
+      - ./supabase:/app/supabase
+    working_dir: /app
+    profiles:
+      - supabase
+
+volumes:
+  redis_data:
