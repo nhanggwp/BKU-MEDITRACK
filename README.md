@@ -9,26 +9,26 @@
 MediTrack is an intelligent healthcare platform designed to help manage medications and ensure medication safety, developed for the UIT Challenge competition. The system consists of 4 main components:
 
 - **Backend API**: FastAPI (Python) with AI integration (Gemini)
-- **DDI Service**: Deep learning─powered drug-drug interaction prediction service
+- **DDI Service**: Deep learning-powered drug-drug interaction prediction service
 - **Web Application**: React.js responsive web app
 - **Mobile Application**: React Native with Expo
 
 ## Key Features
 
-### AI─Powered Drug Recognition
+### AI-Powered Drug Recognition
 - OCR (Optical Character Recognition) to read information from medication images
 - AI analysis and identification of drug types and components
 - Google Gemini AI integration for high accuracy
 
 ### Drug Interaction Management
 - **Advanced DDI Prediction**: Deep learning model with 1317 side effect labels
-- **Molecular Analysis**: Uses molecular fingerprints for high─accuracy predictions
+- **Molecular Analysis**: Uses molecular fingerprints for high-accuracy predictions
 - **REST API Integration**: Dedicated service running on port 8001
 - Check interactions between different medications
 - Warnings for side effects and contraindications
 - TwoSides database for comprehensive drug interaction information
 
-### Cross─Platform Interface
+### Cross-Platform Interface
 - **Web**: Responsive interface for desktop/tablet
 - **Mobile**: Native application with Expo for iOS/Android
 - **QR Code**: Share prescription information via QR codes
@@ -91,8 +91,8 @@ The DDI (Drug-Drug Interaction) Service is a specialized deep learning microserv
 
 #### Single Drug Pair Prediction
 ```bash
-curl ─X POST "http://localhost:8001/predict" \
-─H "Content─Type: application/json" \
+curl -X POST "http://localhost:8001/predict" \
+-H "Content-Type: application/json" \
 -d '{
   "drug1_smiles": "CC(C)CC1=CC=C(C=C1)C(C)C(=O)O",
   "drug2_smiles": "CC1=CC=C(C=C1)C(=O)C2=CC=CC=C2",
@@ -102,8 +102,8 @@ curl ─X POST "http://localhost:8001/predict" \
 
 #### Batch Predictions
 ```bash
-curl ─X POST "http://localhost:8001/predict/batch" \
-─H "Content─Type: application/json" \
+curl -X POST "http://localhost:8001/predict/batch" \
+-H "Content-Type: application/json" \
 -d '{
   "drug_pairs": [
     {
@@ -117,7 +117,7 @@ curl ─X POST "http://localhost:8001/predict/batch" \
 
 #### Health Check
 ```bash
-curl ─X GET "http://localhost:8001/health"
+curl -X GET "http://localhost:8001/health"
 ```
 
 ### DDI Service Architecture
@@ -154,7 +154,7 @@ cd DDIService
 ./docker/workflow.sh train
 
 # Or with custom parameters
-docker-compose run ──rm ─e DDI_EPOCHS=20 ─e DDI_BATCH_SIZE=512 ddi─train
+docker-compose run --rm -e DDI_EPOCHS=20 -e DDI_BATCH_SIZE=512 ddi-train
 ```
 
 #### Model Evaluation
@@ -163,16 +163,16 @@ docker-compose run ──rm ─e DDI_EPOCHS=20 ─e DDI_BATCH_SIZE=512 ddi─tra
 ./docker/workflow.sh evaluate
 
 # Generate performance reports
-./docker/evaluate.sh ──save─plots ──output-dir ./results
+./docker/evaluate.sh --save-plots -output-dir ./results
 ```
 
 #### Testing & Validation
 ```bash
 # Integration tests
-./docker/test─integration.sh
+./docker/test-integration.sh
 
 # API endpoint tests
-docker-compose run ──rm ddi─test
+docker-compose run --rm ddi-test
 ```
 
 
@@ -182,43 +182,43 @@ docker-compose run ──rm ddi─test
 
 ```
 MediTrack─Platform/
-├─- docker-compose.yml              # Main orchestration file
-├─- .env                           # Environment configuration
-├─- README.md                      # This documentation
+├── docker-compose.yml              # Main orchestration file
+├── .env                           # Environment configuration
+├── README.md                      # This documentation
 │
-├─- MediTrack/                     # Main application
-│   ├─- BackEnd/                   # FastAPI backend (Port: 8000)
-│   │   ├─- main.py               # API server
-│   │   ├─- routes/               # API endpoints
-│   │   ├─- services/             # Business logic
-│   │   └─- requirements.txt      # Python dependencies
+├── MediTrack/                     # Main application
+│   ├── BackEnd/                   # FastAPI backend (Port: 8000)
+│   │   ├── main.py               # API server
+│   │   ├── routes/               # API endpoints
+│   │   ├── services/             # Business logic
+│   │   └── requirements.txt      # Python dependencies
 │   │
-│   └─- ClientApp/                # React Native mobile app
-│       ├─- src/                  # Mobile source code
-│       ├─- App.js               # Main mobile component
-│       └─- package.json         # Node.js dependencies
+│   └── ClientApp/                # React Native mobile app
+│       ├── src/                  # Mobile source code
+│       ├── App.js               # Main mobile component
+│       └── package.json         # Node.js dependencies
 │
-├─- MediTrackWeb/                 # React.js web app (Port: 3000)
-│   ├─- src/                     # Web source code
-│   ├─- public/                  # Static assets
-│   └─- package.json            # Web dependencies
+├── MediTrackWeb/                 # React.js web app (Port: 3000)
+│   ├── src/                     # Web source code
+│   ├── public/                  # Static assets
+│   └── package.json            # Web dependencies
 │
-├─- DDIService/                  # Drug Interaction Service (Port: 8001)
-│   ├─- src/                    # Core ML source code
-│   │   ├─- model.py           # Neural network architecture
-│   │   ├─- inference.py       # Prediction engine
-│   │   ├─- training.py        # Training pipeline
-│   │   └─- config.py          # ML configuration
-│   ├─- models/                # Trained model files
-│   ├─- docker/               # Docker workflows
-│   │   ├─- workflow.sh       # Complete workflows
-│   │   ├─- train.sh         # Training scripts
-│   │   └─- evaluate.sh      # Evaluation scripts
-│   ├─- main.py              # DDI API server
-│   └─- docker-compose.yml   # DDI─specific compose
+├── DDIService/                  # Drug Interaction Service (Port: 8001)
+│   ├── src/                    # Core ML source code
+│   │   ├── model.py           # Neural network architecture
+│   │   ├── inference.py       # Prediction engine
+│   │   ├── training.py        # Training pipeline
+│   │   └── config.py          # ML configuration
+│   ├── models/                # Trained model files
+│   ├── docker/               # Docker workflows
+│   │   ├── workflow.sh       # Complete workflows
+│   │   ├── train.sh         # Training scripts
+│   │   └── evaluate.sh      # Evaluation scripts
+│   ├── main.py              # DDI API server
+│   └── docker-compose.yml   # DDI─specific compose
 │
-└─- nginx/                   # Load balancer & SSL
-    └─- nginx.conf          # Proxy configuration
+└── nginx/                   # Load balancer & SSL
+    └── nginx.conf          # Proxy configuration
 ```
 
 ### System Requirements
@@ -276,9 +276,9 @@ docker-compose logs -f meditrack-mobile
 docker-compose down
 
 # Clean up everything (containers, images, volumes, networks)
-docker system prune -af ─-volumes
+docker system prune -af --volumes
 
-# Remove project─specific volumes 
+# Remove project-specific volumes 
 docker volume prune -f
 
 # Restart fresh
@@ -320,7 +320,7 @@ cd DDIService
 ./docker/workflow.sh evaluate
 
 # Run comprehensive tests
-./docker/test─integration.sh
+./docker/test-integration.sh
 
 # Complete workflow (train → evaluate → serve)
 ./docker/workflow.sh full
@@ -330,7 +330,7 @@ cd DDIService
 
 ```bash
 # Limit resource usage (optional)
-docker-compose ──compatibility up -d
+docker-compose --compatibility up -d
 ```
 
 Add to docker-compose.yml for resource limits:
@@ -349,15 +349,15 @@ deploy:
 ##### 1. Permission denied errors
 ```bash
 # Fix permission issues
-sudo chown ─R $(id ─u):$(id ─g) ./MediTrack/.expo
-chmod ─R 755 ./MediTrack/.expo
+sudo chown -R $(id -u):$(id -g) ./MediTrack/.expo
+chmod -R 755 ./MediTrack/.expo
 ```
 
 ##### 2. Port conflicts
 ```bash
 # Find and kill process using port
-sudo lsof ─i :3000  # or :8000, :8081, etc.
-sudo kill ─9 <PID>
+sudo lsof -i :3000  # or :8000, :8081, etc.
+sudo kill -9 <PID>
 ```
 
 ##### 3. Database connection issues
@@ -400,7 +400,7 @@ curl http://localhost:8001/health
 docker-compose restart ddi-service
 
 # Check model file exists
-docker-compose exec ddi-service ls ─la /app/models/
+docker-compose exec ddi-service ls -la /app/models/
 
 # DDI service training issues
 cd DDIService
@@ -413,7 +413,7 @@ cd DDIService
 docker stats
 
 # Check DDI service memory usage (models can be large)
-docker-compose exec ddi-service free ─h
+docker-compose exec ddi-service free -h
 
 # Limit DDI service resources
 # Add to docker-compose.yml under ddi-service:
@@ -432,12 +432,12 @@ docker-compose exec ddi-service free ─h
   - **Backend**: Python FastAPI, PostgreSQL (Supabase), Redis
   - **AI/ML**: Google Gemini API, PyTorch Deep Learning, RDKit
   - **Frontend**: React.js (Web), React Native + Expo (Mobile)
-  - **Infrastructure**: Docker, Nginx, Multi─service Architecture
+  - **Infrastructure**: Docker, Nginx, Multi-service Architecture
 - **Features**: 
   - OCR Drug Recognition with AI
   - Deep Learning Drug Interaction Prediction (1317 side effects)
   - QR Code Prescription Sharing
   - Family Medication Management
-  - Cross─platform (Web + Mobile)
+  - Cross-platform (Web + Mobile)
 
 **Thank you for reviewing our submission!**
