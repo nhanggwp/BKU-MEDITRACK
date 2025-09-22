@@ -1,0 +1,167 @@
+services:
+  # Production API service
+  ddi-api:
+    build:
+      context: .
+      target: serve
+    container_name: ddi-api
+    ports:
+      - "8001:8001"
+    environment:
+      - DDI_ENVIRONMENT=production
+      - DDI_MODEL_PATH=/app/models/best_ddi_model.pt
+      - DDI_HOST=0.0.0.0
+      - DDI_PORT=8001
+      - DDI_LOG_LEVEL=info
+      - NUM_LABELS=1317
+    volumes:
+      - ./models:/app/models:ro  # Read-only mount for models
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - ddi-network
+
+  # Training service
+  ddi-train:
+    build:
+      context: .
+      target: train
+    container_name: ddi-train
+    environment:
+      - DDI_ENVIRONMENT=training
+      - DDI_DEVICE=auto
+      - DDI_EPOCHS=10
+      - DDI_BATCH_SIZE=256
+      - DDI_LEARNING_RATE=0.001
+      - DDI_USE_CACHE=true
+    volumes:
+      - ./models:/app/models        # For saving trained models
+      - ./cache:/app/cache          # For caching processed data
+      - ./results:/app/results      # For training logs and metrics
+      - ./configs:/app/configs:ro   # Read-only config files
+    profiles:
+      - training
+    networks:
+      - ddi-network
+
+  # Evaluation service
+  ddi-evaluate:
+    build:
+      context: .
+      target: evaluate
+    container_name: ddi-evaluate
+    environment:
+      - DDI_ENVIRONMENT=evaluation
+      - DDI_MODEL_PATH=/app/models/best_ddi_model.pt
+    volumes:
+      - ./models:/app/models:ro     # Read-only models
+      - ./results:/app/results      # For evaluation results
+      - ./cache:/app/cache:ro       # Read-only cached data
+    profiles:
+      - evaluation
+    networks:
+      - ddi-network
+
+  # Development environment with Jupyter
+  ddi-dev:
+    build:
+      context: .
+      target: development
+    container_name: ddi-dev
+    ports:
+      - "8001:8001"   # FastAPI
+      - "8888:8888"   # Jupyter
+      - "6006:6006"   # TensorBoard
+    environment:
+      - DDI_ENVIRONMENT=development
+      - DDI_DEBUG=true
+      - JUPYTER_ENABLE_LAB=yes
+    volumes:
+      - .:/app                      # Full source code mount
+      - ./models:/app/models
+      - ./cache:/app/cache
+      - ./results:/app/results
+    profiles:
+      - development
+    command: >
+      bash -c "
+        jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root &
+        python run_service.py --reload --log-level debug
+      "
+    networks:
+      - ddi-network
+
+  # Database for storing results (optional)
+  postgres:
+    image: postgres:15-alpine
+    container_name: ddi-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ddi_results}
+      POSTGRES_USER: ${POSTGRES_USER:-ddi_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    profiles:
+      - database
+    networks:
+      - ddi-network
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: ddi-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    profiles:
+      - cache
+    networks:
+      - ddi-network
+
+  # Monitoring with Prometheus (optional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ddi-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    profiles:
+      - monitoring
+    networks:
+      - ddi-network
+
+  # Grafana dashboard (optional)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ddi-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana:/etc/grafana/provisioning:ro
+    profiles:
+      - monitoring
+    networks:
+      - ddi-network
+
+networks:
+  ddi-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  grafana_data:

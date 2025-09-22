@@ -1,0 +1,157 @@
+.sidebar {
+  width: 250px;
+  background-color: #f9fbfd;
+  color: #2f3a4c;
+  height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease;
+}
+
+.highlight-blue {
+  color: #4285f4;
+}
+
+.highlight-green {
+  color: #34a853;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-size: 27px;
+  font-weight: bold;
+  display: flex;
+}
+
+.menu {
+  flex-grow: 1;
+}
+
+/* --------- MENU ITEM --------- */
+.menu-item {
+  position: relative; /* để chứa pseudo-element */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #2f3a4c;
+  border-radius: 12px;
+  transition: background 0.3s, color 0.3s;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+/* icon chung */
+.menu-item svg {
+  background-color: #e6f0fd;
+  color: #4285f4;
+  padding: 6px;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* pseudo-element làm thanh indicator bên trái */
+.menu-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: #4285f4;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s ease;
+}
+
+/* Hover state */
+.menu-item:hover {
+  background-color: #e6f0fd;
+  color: #4285f4;
+}
+.menu-item:hover svg {
+  background-color: #d0e4ff;
+}
+
+/* Active state */
+.menu-item.active {
+  background-color: #e6f0fd;
+  color: #4285f4;
+}
+.menu-item.active svg {
+  background-color: #4285f4;
+  color: white;
+}
+/* Kích hoạt thanh indicator khi active */
+.menu-item.active::before {
+  transform: scaleY(1);
+}
+
+/* DIVIDER & REPORT LABEL */
+.divider {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #e0e6ed;
+  transition: border-color 0.3s;
+}
+
+.report-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8c9aac;
+  margin: 20px 0 10px 15px;
+  transition: color 0.3s;
+}
+
+/* LOGOUT BUTTON */
+.logout-button {
+  background-color: #f0f2f5;
+  color: #2f3a4c;
+  border: none;
+  border-radius: 12px;
+  padding: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.logout-button svg {
+  background-color: #e6f0fd;
+  color: #4285f4;
+  padding: 6px;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #e0e6ed;
+}
+.logout-button:hover svg {
+  background-color: #d0e4ff;
+}

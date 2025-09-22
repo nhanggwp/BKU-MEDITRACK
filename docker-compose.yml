@@ -1,0 +1,167 @@
+services:
+  # Backend API Service
+  meditrack-api:
+    build:
+      context: ./MediTrack/BackEnd
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - REDIS_URL=redis://redis:6379
+      - SECRET_KEY=${SECRET_KEY}
+      - QR_ENCRYPTION_KEY=${QR_ENCRYPTION_KEY}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+    volumes:
+      - backend_uploads:/app/uploads
+      - backend_temp:/app/temp
+      - ./MediTrack/BackEnd/db-twosides:/app/db-twosides
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - meditrack-network
+
+  # Web UI Service
+  meditrack-web:
+    build:
+      context: ./MediTrackWeb
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+      - NODE_ENV=production
+    depends_on:
+      - meditrack-api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - meditrack-network
+
+  # DDI (Drug-Drug Interaction) Prediction Service
+  ddi-service:
+    build:
+      context: ./DDIService
+      dockerfile: Dockerfile
+      target: serve
+    ports:
+      - "8001:8001"
+    environment:
+      - MODEL_PATH=/app/models/best_ddi_model.pt
+      - NUM_LABELS=1317
+      - DDI_PORT=8001
+    volumes:
+      - ./DDIService/models:/app/models:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - meditrack-network
+
+  # Mobile Development Service (Expo)
+  meditrack-mobile:
+    build:
+      context: ./MediTrack
+      dockerfile: Dockerfile.mobile
+    ports:
+      - "8081:8081"    # Metro Bundler
+      - "19000:19000"  # Expo Dev Tools
+      - "19001:19001"  # Expo Dev Server
+      - "19002:19002"  # Tunnel connection
+    stdin_open: true
+    tty: true
+    environment:
+      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
+      - REACT_NATIVE_PACKAGER_HOSTNAME=0.0.0.0
+      - API_URL=http://meditrack-api:8000
+      - EXPO_NO_TELEMETRY=1
+      - EXPO_NO_UPDATE_CHECK=1
+    volumes:
+      - ./MediTrack:/app
+      - mobile_node_modules:/app/node_modules
+      - expo_cache:/home/expo/.expo
+    depends_on:
+      redis:
+        condition: service_healthy
+      meditrack-api:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - meditrack-network
+    user: "1001:1001"  # Use container user to fix permission issues
+
+  # Redis Cache Service
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - meditrack-network
+
+  # Nginx Reverse Proxy (Production)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - meditrack-api
+      - meditrack-web
+      - ddi-service
+    restart: unless-stopped
+    networks:
+      - meditrack-network
+    profiles:
+      - production
+
+volumes:
+  redis_data:
+  backend_uploads:
+  backend_temp:
+  mobile_node_modules:
+  expo_cache:
+  nginx_logs:
+
+networks:
+  meditrack-network:
+    driver: bridge
+    name: meditrack-network
+    external: false

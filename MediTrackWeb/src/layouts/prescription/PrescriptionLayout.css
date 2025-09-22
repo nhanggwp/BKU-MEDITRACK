@@ -1,0 +1,45 @@
+.prescription-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.prescription-toolbar {
+  display: flex;
+  gap: 32px;
+  background-color: #f9fbfd;
+  padding: 20px 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: 20px auto;
+}
+
+.toolbar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #2f3a4c;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.toolbar-item svg {
+  margin-bottom: 4px;
+  transition: color 0.3s;
+}
+
+.toolbar-item:hover {
+  color: #4285f4;
+}
+
+.toolbar-item.active {
+  color: #4285f4;
+}
+
+.prescription-content {
+  width: 100%;
+  max-width: 900px;
+  padding: 20px;
+}
