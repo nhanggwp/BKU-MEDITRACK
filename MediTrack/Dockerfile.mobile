@@ -1,0 +1,47 @@
+# Expo Development Environment
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install global dependencies
+RUN npm install -g @expo/cli@latest @expo/ngrok@latest
+
+# Install system dependencies
+RUN apk add --no-cache \
+    git \
+    python3 \
+    make \
+    g++ \
+    curl
+
+# Create non-root user with proper permissions
+RUN addgroup -g 1001 -S expo && \
+    adduser -S expo -u 1001 -G expo && \
+    mkdir -p /home/expo/.expo /home/expo/.npm /app && \
+    chown -R expo:expo /home/expo /app && \
+    chmod -R 775 /home/expo/.expo
+
+# Copy package files and install dependencies
+USER expo
+COPY --chown=expo:expo package*.json ./
+
+# Clear npm cache and install dependencies properly
+RUN npm cache clean --force && \
+    npm install && \
+    npx expo install --fix
+
+# Copy source code
+COPY --chown=expo:expo . .
+
+# Create necessary directories
+RUN mkdir -p .expo
+
+# Expose Expo development ports
+EXPOSE 8081 19000 19001 19002
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+  CMD curl -f http://localhost:8081 || exit 1
+
+# Default command optimized for Docker with QR code display
+CMD ["sh", "-c", "npm install --no-save && npx expo start --host tunnel --clear"]

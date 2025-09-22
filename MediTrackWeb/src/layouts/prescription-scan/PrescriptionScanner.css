@@ -1,0 +1,68 @@
+.scanner-page {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: auto;
+  font-family: "Segoe UI", sans-serif;
+  color: #1e3a8a;
+}
+
+.scanner-page h2 {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 24px;
+  font-weight: 700;
+  color: #1e40af;
+}
+
+.scanner-card {
+  background: #f0f6ff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.manual-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.manual-input label {
+  font-weight: 600;
+  color: #2563eb;
+  font-size: 15px;
+}
+
+.manual-input textarea {
+  padding: 14px 16px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  transition: border 0.3s, box-shadow 0.3s;
+  resize: vertical;
+  background-color: white;
+}
+
+.manual-input textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  outline: none;
+}
+
+/* Optional: bring back toggle button with improved style */
+.toggle-button {
+  padding: 10px 20px;
+  margin: 20px 0;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.toggle-button:hover {
+  background-color: #1e40af;
+}

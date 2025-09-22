@@ -1,0 +1,112 @@
+.container {
+  max-width: 600px;
+  margin: 4rem auto;
+  padding: 2rem 2.5rem;
+  background: #f9fbff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.container h2 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 2rem;
+}
+
+.patient-wrapper,
+.select-wrapper {
+  margin-bottom: 1.2rem;
+}
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 1.2rem;
+}
+
+.remove-inside-btn {
+  position: absolute;
+  right: -1.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #9ca3af;
+}
+
+.remove-inside-btn:hover {
+  color: #ef4444;
+}
+
+.add-btn,
+.check-btn {
+  padding: 0.6rem 1.5rem;
+  margin-top: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+}
+
+.add-btn {
+  background: linear-gradient(to right, #3b82f6, #2563eb);
+  color: white;
+}
+
+.add-btn:hover {
+  background: #1e40af;
+}
+
+.check-btn {
+  background: linear-gradient(to right, #4285f4, #4285f4);
+  color: white;
+  margin-top: 20px;
+}
+
+.check-btn:hover {
+  background: #4285f4;
+}
+
+.alert {
+  margin-top: 1.8rem;
+  text-align: center;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.alert-safe {
+  color: #10b981;
+}
+
+.alert-danger {
+  color: #ef4444;
+}
+
+/* react-select overrides */
+.css-13cymwt-control,
+.css-1nmdiq5-menu {
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  border-color: #cbd5e1 !important;
+}
+
+.css-t3ipsp-control:hover {
+  border-color: #3b82f6 !important;
+}
+
+.css-1pahdxg-control {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Optional: increase font size of selects */
+.css-1dimb5e-singleValue {
+  font-size: 14px;
+}

@@ -1,0 +1,161 @@
+/* Page background & container */
+.settings-page {
+  background: #f5f7fa;
+  padding: 24px;
+  min-height: 100vh;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.settings-header {
+  font-size: 32px;
+  color: #2f3a4c;
+  margin-bottom: 24px;
+}
+
+/* Section wrapper */
+.settings-section {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 20px;
+  color: #3b4858;
+  margin-bottom: 16px;
+  border-left: 4px solid #4285f4;
+  padding-left: 8px;
+}
+
+/* List of items in a section */
+.settings-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Card style for each setting row */
+.settings-item {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 12px 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.settings-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Icon with gradient background */
+.settings-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-right: 16px;
+  background: linear-gradient(135deg, #e6f0fd, #c2dbfb);
+  color: #4285f4;
+}
+
+/* Text content */
+.settings-content {
+  flex: 1;
+}
+
+.settings-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #2f3a4c;
+}
+
+.settings-desc {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* Action area */
+.settings-action {
+  margin-left: 16px;
+}
+
+/* Common button */
+.btn {
+  background: #4285f4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn:hover {
+  background: #346ac3;
+}
+
+/* Select dropdown */
+.select {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* Toggle switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-left: 8px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 24px;
+  transition: background 0.3s;
+  cursor: pointer;
+}
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 2px;
+  top: 2px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+input:checked + .slider {
+  background-color: #4285f4;
+}
+input:checked + .slider::before {
+  transform: translateX(26px);
+}
+
+/* Notification toggles container */
+.notif-toggles {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: 14px;
+  color: #2f3a4c;
+}
