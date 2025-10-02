@@ -1,3 +1,3 @@
 import { useState } from "react";
 
-export const BASE_URL = "http://10.1.1.138:8000";
+export const BASE_URL = "http://192.168.1.244:8000";
